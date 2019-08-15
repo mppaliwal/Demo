@@ -1,0 +1,50 @@
+function Service_PreInvokeMethod (MethodName, Inputs, Outputs)
+{
+                
+     if(MethodName == "Get_Account")
+     {
+
+               var BO = TheApplication().GetBusObject("Account");
+               var BC = BO.GetBusComp("Account");
+
+                var i=0,j=0;
+var sVinArray = new Array('1-20EJBBE');
+
+i=sVinArray.length;
+//Activating the Fields 
+
+BC.ActivateField("Id");
+BC.ActivateField("Primary Organization Id");
+
+
+while(i>j)
+{
+                                with(BC)
+                                {
+                                                ClearToQuery();
+InvokeMethod("SetAdminMode", "TRUE");
+                                                SetViewMode(AllView);
+                                                SetSearchSpec("Id", sVinArray[j]); 
+
+                                                ExecuteQuery();
+                                }
+                               
+                              var Exists = BC.FirstRecord();
+                                
+		if(Exists)
+                                   {
+
+
+                                            with(BC)
+                                               {
+
+                                                 SetFieldValue("Primary Organization Id","1-11243VF");
+                                                 WriteRecord();
+                                                }
+	 }
+       j++;
+               }
+
+}
+
+return (ContinueOperation);
